@@ -91,7 +91,12 @@ exports.signup = async (req, res) => {
     res.status(201).json({ success: true, user: userObj });
   } catch (error) {
     console.error(`Error in signup controller: ${error.message}`);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Internal server error: " + error.message,
+      });
   }
 };
 
@@ -130,12 +135,18 @@ exports.login = async (req, res) => {
       id: user._id,
       username: user.username,
       email: user.email,
+      role: user.role,
     };
 
     res.status(200).json({ success: true, user: userObj });
   } catch (error) {
     console.error(`Error in login controller: ${error.message}`);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Internal server error: " + error.message,
+      });
   }
 };
 
@@ -162,7 +173,12 @@ exports.logout = async (req, res) => {
     res.status(200).json({ success: true, message: "Logged out successfully" });
   } catch (error) {
     console.error(`Error in logout controller: ${error.message}`);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Internal server error: " + error.message,
+      });
   }
 };
 
@@ -202,7 +218,12 @@ exports.refreshToken = async (req, res) => {
       .json({ success: true, message: "Token refreshed successfully" });
   } catch (error) {
     console.error(`Error in getMe controller: ${error.message}`);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Internal server error: " + error.message,
+      });
   }
 };
 
@@ -211,6 +232,11 @@ exports.getProfile = async (req, res) => {
     res.status(200).json({ success: true, user: req.user });
   } catch (error) {
     console.error(`Error in getMe controller: ${error.message}`);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Internal server error: " + error.message,
+      });
   }
 };

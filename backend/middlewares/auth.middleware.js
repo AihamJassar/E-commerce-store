@@ -30,8 +30,8 @@ exports.protectRoute = async (req, res, next) => {
 
 exports.adminRoute = (req, res, next) => {
   try {
-    if (req.user && req.user.role === "admin") next();
-    res
+    if (req.user && req.user.role === "admin") return next();
+    return res
       .status(403)
       .json({ success: false, message: "Access denied: admin only" });
   } catch (error) {

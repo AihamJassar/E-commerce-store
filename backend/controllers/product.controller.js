@@ -87,7 +87,7 @@ exports.getRecommendedProducts = async (req, res) => {
 exports.createProduct = async (req, res) => {
   try {
     const { name, description, price, image, category } = req.body;
-
+    
     if (!name || !description || !price || !image || !category)
       return res
         .status(400)

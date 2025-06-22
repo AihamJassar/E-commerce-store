@@ -40,9 +40,9 @@ const setCookies = (res, accessToken, refreshToken) => {
 
 exports.signup = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { name, email, password } = req.body;
 
-    if (!username || !email || !password)
+    if (!name || !email || !password)
       return res
         .status(400)
         .json({ success: false, message: "Please provide all fields" });
@@ -59,12 +59,6 @@ exports.signup = async (req, res) => {
         message: "Password must be at least 6 characters long",
       });
 
-    const existingUsername = await User.findOne({ username });
-    if (existingUsername)
-      return res
-        .status(400)
-        .json({ success: false, message: "Username already taken" });
-
     const existingEmail = await User.findOne({ email });
     if (existingEmail)
       return res
@@ -72,18 +66,17 @@ exports.signup = async (req, res) => {
         .json({ success: false, message: "Email already taken" });
 
     const newUser = await User.create({
-      username,
+      name,
       email,
       password,
     });
-
     const { accessToken, refreshToken } = generateTokens(newUser._id);
     storeRefreshToken(newUser._id, refreshToken);
     setCookies(res, accessToken, refreshToken);
 
     const userObj = {
       id: newUser._id,
-      username: newUser.username,
+      name: newUser.name,
       email: newUser.email,
       role: newUser.role,
     };
@@ -91,12 +84,10 @@ exports.signup = async (req, res) => {
     res.status(201).json({ success: true, user: userObj });
   } catch (error) {
     console.error(`Error in signup controller: ${error.message}`);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Internal server error: " + error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message: "Internal server error: " + error.message,
+    });
   }
 };
 
@@ -133,7 +124,7 @@ exports.login = async (req, res) => {
 
     const userObj = {
       id: user._id,
-      username: user.username,
+      name: user.name,
       email: user.email,
       role: user.role,
     };
@@ -141,12 +132,10 @@ exports.login = async (req, res) => {
     res.status(200).json({ success: true, user: userObj });
   } catch (error) {
     console.error(`Error in login controller: ${error.message}`);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Internal server error: " + error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message: "Internal server error: " + error.message,
+    });
   }
 };
 
@@ -173,12 +162,10 @@ exports.logout = async (req, res) => {
     res.status(200).json({ success: true, message: "Logged out successfully" });
   } catch (error) {
     console.error(`Error in logout controller: ${error.message}`);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Internal server error: " + error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message: "Internal server error: " + error.message,
+    });
   }
 };
 
@@ -218,12 +205,10 @@ exports.refreshToken = async (req, res) => {
       .json({ success: true, message: "Token refreshed successfully" });
   } catch (error) {
     console.error(`Error in getMe controller: ${error.message}`);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Internal server error: " + error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message: "Internal server error: " + error.message,
+    });
   }
 };
 
@@ -232,11 +217,9 @@ exports.getProfile = async (req, res) => {
     res.status(200).json({ success: true, user: req.user });
   } catch (error) {
     console.error(`Error in getMe controller: ${error.message}`);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Internal server error: " + error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message: "Internal server error: " + error.message,
+    });
   }
 };

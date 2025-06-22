@@ -11,9 +11,7 @@ exports.analyticsData = async (req, res) => {
 
     const dailySalesData = await getDailySalesData(startDate, endDate);
 
-    res
-      .status(200)
-      .json({ success: true, data: { analyticsData, dailySalesData } });
+    res.status(200).json({ success: true, analyticsData, dailySalesData });
   } catch (error) {
     console.error(`Error in analyticsData controller: ${error.message}`);
     res.status(500).json({

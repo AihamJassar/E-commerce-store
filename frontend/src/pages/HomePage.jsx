@@ -25,7 +25,7 @@ export const HomePage = () => {
             <CategoryItem key={category.name} category={category} />
           ))}
         </div>
-        {/* {!isLoading && useProductStore.length > 0 && <FeaturedProducts featuredProducts={ products} /> */}
+        {/* {!isLoading && useProductStore.length > 0 && <FeaturedProducts featuredProducts={ products} /> } */}
       </div>
     </div>
   );

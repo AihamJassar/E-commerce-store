@@ -14,7 +14,6 @@ const categories = [
 ];
 
 export const CreateProductForm = () => {
-  
   const [newProduct, setNewProduct] = useState({
     name: "",
     description: "",
@@ -27,6 +26,7 @@ export const CreateProductForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(newProduct);
     try {
       await createProduct(newProduct);
       setNewProduct({
@@ -142,7 +142,7 @@ export const CreateProductForm = () => {
           <select
             name="category"
             id="category"
-            value={newProduct.value}
+            value={newProduct.category}
             onChange={(e) =>
               setNewProduct({ ...newProduct, category: e.target.value })
             }
@@ -151,6 +151,7 @@ export const CreateProductForm = () => {
 						 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
             required
           >
+            <option value="">Select a Category</option>
             {categories.map((category) => (
               <option key={category} value={category}>
                 {category}

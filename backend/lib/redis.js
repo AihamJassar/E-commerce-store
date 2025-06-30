@@ -1,5 +1,5 @@
-const Redis = require('ioredis');
-const dotenv = require('dotenv');
+const Redis = require("ioredis");
+const dotenv = require("dotenv");
 
 dotenv.config();
 

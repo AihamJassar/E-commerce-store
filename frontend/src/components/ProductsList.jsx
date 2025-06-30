@@ -71,7 +71,9 @@ export const ProductsList = () => {
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-300">
-                  ${product.price.toFixed(2)}
+                  {typeof product.price === "number"
+                    ? `$${product.price.toFixed(2)}`
+                    : "N/A"}
                 </div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">

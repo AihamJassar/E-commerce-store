@@ -39,7 +39,7 @@ exports.getFeaturedProducts = async (req, res) => {
 exports.getProductsByCategory = async (req, res) => {
   try {
     const { category } = req.params;
-    
+
     if (!category)
       return res
         .status(400)
@@ -87,7 +87,7 @@ exports.getRecommendedProducts = async (req, res) => {
 exports.createProduct = async (req, res) => {
   try {
     const { name, description, price, image, category } = req.body;
-    
+
     if (!name || !description || !price || !image || !category)
       return res
         .status(400)
@@ -121,16 +121,20 @@ exports.deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
     if (!id)
-      return res.status(400).json({ success: false, message: "No id provided" });
+      return res
+        .status(400)
+        .json({ success: false, message: "No id provided" });
 
     const product = await Product.findById(id);
     if (!product)
-      return res.status(404).json({ success: false, message: "Product not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Product not found" });
 
     if (product.image) {
       const publicId = product.image.split("/").pop().split(".")[0];
       try {
-        await cloudinary.destroy(`products/${publicId}`);
+        await cloudinary.uploader.destroy(`products/${publicId}`);
         console.log("Deleted image from Cloudinary");
       } catch (error) {
         console.log("Error deleting image from Cloudinary");
@@ -155,11 +159,15 @@ exports.toggleFeaturedProduct = async (req, res) => {
   try {
     const { id } = req.params;
     if (!id)
-      return res.status(400).json({ success: false, message: "No id provided" });
+      return res
+        .status(400)
+        .json({ success: false, message: "No id provided" });
 
     const product = await Product.findById(id);
     if (!product)
-      return res.status(404).json({ success: false, message: "Product not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Product not found" });
 
     product.isFeatured = !product.isFeatured;
     const updatedProduct = await product.save();

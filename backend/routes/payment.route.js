@@ -4,11 +4,10 @@ const {
   createCheckoutSession,
   checkoutSuccess,
 } = require("../controllers/payment.controller");
-const { validate } = require("../models/coupon.model");
 
 const router = express.Router();
 
-router.post("/", protectRoute, createCheckoutSession);
-router.post("/validate", protectRoute, checkoutSuccess);
+router.post("/create-checkout-session", protectRoute, createCheckoutSession);
+router.post("/checkout-success", protectRoute, checkoutSuccess);
 
 module.exports = router;

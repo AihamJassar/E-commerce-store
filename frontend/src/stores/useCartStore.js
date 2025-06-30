@@ -70,7 +70,6 @@ export const useCartStore = create((set, get) => ({
   },
   removeFromCart: async (productId) => {
     try {
-      console.log({productId})
       await axiosInstance.delete(`/carts/${productId}`);
       set((prevState) => ({
         cart: prevState.cart.filter((item) => item._id !== productId),

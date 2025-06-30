@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
-import { useCartStore } from "../stores/useCartStore";
-import { useUserStore } from "../stores/useUserStore";
+import { useCartStore } from "../../stores/useCartStore";
+import { useUserStore } from "../../stores/useUserStore";
 import { ShoppingCart } from "lucide-react";
 
 export const ProductCard = ({ product }) => {
@@ -24,7 +24,7 @@ export const ProductCard = ({ product }) => {
           src={product.image}
           alt={product.name}
         />
-        <div className="absolute inset-0 bg-black bg-opacity-20" />
+        <div className="absolute inset-0 bg-black opacity-20" />
       </div>
 
       <div className="mt-4 px-5 pb-5">

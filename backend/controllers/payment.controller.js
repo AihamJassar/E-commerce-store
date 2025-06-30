@@ -1,6 +1,9 @@
 const Coupon = require("../models/coupon.model");
 const Order = require("../models/order.model");
 const stripe = require("../lib/stripe");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 exports.createCheckoutSession = async (req, res) => {
   try {
@@ -37,16 +40,18 @@ exports.createCheckoutSession = async (req, res) => {
         userId: req.user_id,
         isActive: true,
       });
-      totalAmount -= Math.round(
-        (totalAmount * coupon.discountPercentage) / 100
-      );
+      if (coupon) {
+        totalAmount -= Math.round(
+          (totalAmount * coupon.discountPercentage) / 100
+        );
+      }
     }
 
-    const session = await stripe.checkout.session.create({
+    const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: lineItem,
       mode: "payment",
-      success_url: `${process.env.CLIENT_URL}/purchase-success?session_id=[CHECKOUT_SESSION_ID]`,
+      success_url: `${process.env.CLIENT_URL}/purchase-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.CLIENT_URL}/purchase-cancel`,
       discounts: coupon
         ? [
@@ -68,7 +73,7 @@ exports.createCheckoutSession = async (req, res) => {
       },
     });
 
-    if (totalAmount > 20000) await createNewCoupon(req.user_id);
+    if (totalAmount > 20000) await createNewCoupon(req.user._id);
 
     res.status(200).json({
       success: true,
@@ -88,7 +93,7 @@ exports.createCheckoutSession = async (req, res) => {
 exports.checkoutSuccess = async (req, res) => {
   try {
     const { sessionId } = req.body;
-    const session = await stripe.checkout.session.retrieve(sessionId);
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
 
     if (session.payment_status === "paid") {
       if (session.metadata.couponCode) {
